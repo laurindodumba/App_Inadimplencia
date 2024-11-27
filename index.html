@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- Configurações de metadados -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previsão de Inadimplência</title>
+    <!-- Estilos CSS Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Estilos CSS personalizados -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-column {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .prediction-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            color: white;
+        }
+        .prediction-message-dark-blue {
+            background-color: #001f3f; /* Azul */
+        }
+        /* Estilo para o botão "Prever" */
+        .prever-button {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Formulário de entrada de dados -->
+    <form action="/predict" method="POST"> <!-- A ação do formulário é enviar dados para a rota '/predict' usando o método POST -->
+        <div class="container">
+            <h1>Previsão de Inadimplência</h1>
+
+            <!-- Divisão em duas colunas para entrada de dados -->
+            <div class="row">
+                <!-- Primeira coluna -->
+                <div class="col-md-6">
+                    <div class="form-column">
+                        <!-- Campos de entrada para as primeiras features -->
+                        <div class="form-group">
+                            <label for="person_age">Idade:</label>
+                            <input type="number" class="form-control" id="person_age" name="person_age" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="person_income">Renda Anual:</label>
+                            <input type="number" class="form-control" id="person_income" name="person_income" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="person_home_ownership">Posse de Casa:</label>
+                            <select class="form-control" id="person_home_ownership" name="person_home_ownership" required>
+                                <option value="OWN">Própria</option>
+                                <option value="MORTGAGE">Hipotecada</option>
+                                <option value="RENT">Alugada</option>
+                                <option value="OTHER">Outro</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="person_emp_length">Tempo de Emprego:</label>
+                            <input type="number" class="form-control" id="person_emp_length" name="person_emp_length" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loan_intent">Intenção do Empréstimo:</label>
+                            <select class="form-control" id="loan_intent" name="loan_intent" required>
+                                <option value="EDUCATION">Educação</option>
+                                <option value="MEDICAL">Médico</option>
+                                <option value="VENTURE">Ventura</option>
+                                <option value="PERSONAL">Pessoal</option>
+                                <option value="HOMEIMPROVEMENT">Melhoria da Casa</option>
+                                <option value="DEBTCONSOLIDATION">Consolidação de Dívidas</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- Segunda coluna -->
+                <div class="col-md-6">
+                    <div class="form-column">
+                        <!-- Campos de entrada para as features restantes -->
+                        <div class="form-group">
+                            <label for="loan_grade">Classificação do Empréstimo:</label>
+                            <select class="form-control" id="loan_grade" name="loan_grade" required>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                                <option value="G">G</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loan_amnt">Valor do Empréstimo:</label>
+                            <input type="number" class="form-control" id="loan_amnt" name="loan_amnt" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loan_int_rate">Taxa de Juros do Empréstimo:</label>
+                            <input type="number" class="form-control" id="loan_int_rate" name="loan_int_rate" step="0.01" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loan_percent_income">Percentual de Renda para o Empréstimo:</label>
+                            <input type="number" class="form-control" id="loan_percent_income" name="loan_percent_income" step="0.01" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cb_person_default_on_file">Registro de Inadimplência:</label>
+                            <select class="form-control" id="cb_person_default_on_file" name="cb_person_default_on_file" required>
+                                <option value="N">Não</option>
+                                <option value="Y">Sim</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cb_person_cred_hist_length">Histórico de Crédito:</label>
+                            <input type="number" class="form-control" id="cb_person_cred_hist_length" name="cb_person_cred_hist_length" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Botão de Previsão -->
+            <button type="submit" class="btn btn-primary btn-block prever-button">Prever</button>
+        </div>
+    </form> <!-- Fechamento do formulário -->
+
+    <!-- Exibição do resultado da previsão -->
+    <div class="container" id="predictionResult">
+        {% if resultado %}
+            <p class="prediction-message prediction-message-dark-blue">
+                {{resultado}}
+            </p>
+        {% endif %}
+    </div>
+
+    <!-- Scripts JavaScript Bootstrap e jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
