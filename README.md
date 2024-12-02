@@ -34,6 +34,3 @@ Quatro algoritmos diferentes foram treinado (Random Forest, XGBoost, LightGBM e 
 1. Instale as dependências necessárias.
 2. Execute os notebooks como de costume, usando um servidor Jupyter Notebook, Vscode, etc.
 
-# Contato
-- igorrodlima03@gmail.com
-- https://www.linkedin.com/in/igorrodlima/
